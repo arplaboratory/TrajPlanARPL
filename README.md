@@ -93,7 +93,7 @@ You can also drag and drop waypoints to see various paths.
 
 Launch File
 ------------------------
-The launch file calles the config file
+The launch file loads std_launch.yaml running  roslaunch ros_traj_gen_utils traj_plan.launch
 
 Config File
 ------------------------
