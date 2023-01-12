@@ -69,7 +69,7 @@ Usage
 ON YOUR LAPTOP, clone and build the repository Waypoint Navigation Plug-in (usefull for GUI):
 
 ```
-git clone https://github.com/arplaboratory/waypoint_navigation_plugin
+git clone https://github.com/KumarRobotics/waypoint_navigation_plugin.git
 ```
 
 Run Demo
