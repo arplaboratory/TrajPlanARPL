@@ -57,6 +57,7 @@ Installation Pre-requisites
 -------------------------
 ```
 git clone https://github.com/arplaboratory/ARPL_Trajectory_Planning
+git clone https://github.com/arplaboratory/arpl_msgs.git
 cd ARPL_Trajectory_Planning
 sh install_trajgen_depend.sh
 ```
