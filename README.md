@@ -104,9 +104,6 @@ Trajectories
   *  QPpolyTraj.h -> Contains 2 solvers for a QP formulation of the function of a polynomial based trajectories
         *  Fast Solve -> Solves 2x ->10x faster than Normal Solve but creates a slightly less optimal path
         *  Solve -> Basic Solve that finds the optimal path that minimizes snap for a polynomial
-  *  BernTraj.h -> Contains 2 solvers for a QP formulation of the function of a Bezier polynomial based trajectories
-        *  Bezier Curves allow the Convex Hull property to be impled
-        * i.e. ABSOLUTE LIMITS on position/velocity/acceleration without work
 
 ros_traj_gen_utils
 Contains ROS interfaces.
