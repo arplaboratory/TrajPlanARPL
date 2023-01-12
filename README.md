@@ -122,7 +122,7 @@ ros_traj_gen_utils
 Contains ROS interfaces.
 
 
-COMMON INSTALLATION PORBLEMS
+COMMON INSTALLATION PROBLEMS
 ------------------------
 99.99% of install problems especially if you get errors like involve gfortran directory being wrong
 ma27d.f:(.text+0x59cc): undefined reference to `_gfortran_st_write'
