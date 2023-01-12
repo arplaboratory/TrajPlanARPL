@@ -97,6 +97,13 @@ The launch file calles the config file
 
 Config File
 ------------------------
+mav_name - vehicle if you want to loop a vehicle's odometry mav_name/odom inside nav_msgs/odometry type. If no odometry is detected it will not automatically lopp the mav_name/odom topic inside
+
+visual - true. Allows visual feedback to pushed in.
+
+target - 4x4 matrix example given. Only the first 3x3 block. Will set a desired target if you want to hardcore it. This will be applied to the last target.If no target is set then we assume a full stop
+
+Currently, this is naturally set to a 90 degree pitch interception. 
 
 
 Library Features
