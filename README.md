@@ -53,7 +53,7 @@ If you publish a paper with this work, please cite our paper:
  ```
  
  
-Installation Pre-requisites 
+Installation  
 -------------------------
 ```
 git clone https://github.com/arplaboratory/ARPL_Trajectory_Planning
@@ -79,20 +79,25 @@ If you are from ARPL, please follow these steps on your computer:
 roslaunch waypoint_navigation_plugin rviz.launch
 ```
 
-
-Else if you are NOT from ARPL, do the following steps:
 ```
 roslaunch ros_traj_gen_utils traj_plan.launch
 ```
 Change Robot name to vehicle_name/waypoints <- standard trajectory 
-Drag and drop waypoints (Next to publish Point top bar)
-The plugin will publish a nav_msgs/path
-Output visualized 3D path. 2d plots of time versions various. topic published on vehicle_name/position_cmd
+ Load the waypoints in the ros_traj_gen_utils/config/perch_general.bag
+ The plugin will publish a nav_msgs/path
+Output visualized 3D path. 2d plots of time versions various. 
+topic published on vehicle_name/position_cmd
 
+Initially this is set with a hardcoded target orientation of 90 degrees where you should see it reflected in the acceleration.
+You can also drag and drop waypoints to see various paths.
 
 Launch File
 ------------------------
-The launch file includes the max/min velocity. Also for Bernstein trajectory only. We can declare a box that will limit the trajectory planning. 
+The launch file calles the config file
+
+Config File
+------------------------
+
 
 Library Features
 ------------------------
