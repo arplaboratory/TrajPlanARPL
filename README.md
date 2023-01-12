@@ -1,5 +1,5 @@
 
-Traj_generation uses various Quadratic programming 
+Perching with Quadratic Programming
 ==================================================================================
 
 Overview
