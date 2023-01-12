@@ -1,5 +1,5 @@
 
-Perching with Quadratic Programming
+Polynomial Trajectory Generation with Quadratic Programming
 ==================================================================================
 
 Overview
