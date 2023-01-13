@@ -83,6 +83,18 @@ Open another terminal and run
 roslaunch ros_traj_gen_utils traj_plan.launch
 ```
 
+Change Robot name to vehicle_name/waypoints <- standard trajectory 
+Load the waypoints in the ros_traj_gen_utils/config/perch_general.bag
+The plugin will publish a nav_msgs/path
+Output visualized 3D path. 2d plots of time versions various. 
+topic published on vehicle_name/position_cmd
+
+Initially this is set with a hardcoded target orientation of 90 degrees where you should see it reflected in the acceleration.
+You can also drag and drop waypoints to see various paths.
+
+Run Demo Internal 
+------------------------
+
 If you are internal to ARPL and want to use our simulator do the following and use the internal waypoint navigation plugin
 
 ```
@@ -102,6 +114,7 @@ topic published on vehicle_name/position_cmd
 
 Initially this is set with a hardcoded target orientation of 90 degrees where you should see it reflected in the acceleration.
 You can also drag and drop waypoints to see various paths.
+
 
 Launch File
 ------------------------
