@@ -17,6 +17,9 @@ using namespace std;
 ros_waypoint_utils listener;
 //Publishers
 ros::Publisher pubQP;
+ros::Publisher visual_vel_pub_;
+ros::Publisher visual_acc_pub_;
+
 ros::Subscriber subWaypoint;
 ros::Subscriber subMap;
 
@@ -47,7 +50,11 @@ void init_params(){
 	nh.getParam("device", vehicle_name);
 	std::cout << " VEHICLE NAME " << vehicle_name <<std::endl;
     // setting up the publishers and subscribers
-	pubQP = nh.advertise<nav_msgs::Path>("trajectory_QP",10);
+	ros::NodeHandle nh_;
+	pubQP = nh_.advertise<nav_msgs::Path>("/"+vehicle_name+"/trackers_manager/qp_tracker/qp_trajectory_pos", 10);
+	visual_vel_pub_ = nh_.advertise<nav_msgs::Path>("/"+vehicle_name+"/trackers_manager/qp_tracker/qp_trajectory_vel", 10);
+	visual_acc_pub_ = nh_.advertise<nav_msgs::Path>("/"+vehicle_name+"/trackers_manager/qp_tracker/qp_trajectory_acc", 10);
+
 	subWaypoint = nh.subscribe(vehicle_name+"/waypoints", 10, &ros_waypoint_utils::waypointListiner, &listener);
 	srv_transition_ = nh.serviceClient<trackers_msgs::Transition>(vehicle_name+"/trackers_manager/transition");
 	hover_	= nh.serviceClient<std_srvs::Trigger>(vehicle_name+"/mav_services/hover");
@@ -68,6 +75,16 @@ void init_params(){
 		std::cout << " WE ARE USING A TARGET " << target <<std::endl;
 	}
 	std::string odom_topic = vehicle_name+odom_frame;
+	subOdomMsg = nh.subscribe(odom_topic, 10, &odom_utils::outputListiner, &odomListiner,ros::TransportHints().tcpNoDelay());
+	subMap = nh.subscribe("/vox_blox_map/graph", 10, &ros_cuboid_utils::setListiner, &cube_map,ros::TransportHints().tcpNoDelay());
+	ineq_const.derivOrder = 0;
+	Eigen::Vector4d lower, upper,InEqDim;
+	lower << -2.0, -2.0, 0.0, 0;
+	upper << 2.0, 2.0, 2.0, 0;
+	InEqDim << 1.0, 1.0, 1.0, 0;
+	ineq_const.lower = lower;
+	ineq_const.upper = upper;
+	ineq_const.InEqDim = InEqDim;
 }
 
 
@@ -78,16 +95,14 @@ void visualize_paths(TrajBase * traj ){
 	nav_msgs::Path msgQP = ros_traj_utils::encodePath(0, traj, listener.getFrameId()) ;
 	pubQP.publish(msgQP);
 	//Do 2D Visualization
-	std::cout << "BEGIN VISUALIZATION GRAPH " <<std::endl;
-	bool display2D = true;
+	bool display2D = false;
 	nh.getParam("display_2D",display2D);
 	if(display2D){
-		ros_traj_utils::graph2D_traj(0, traj );
-		ros_traj_utils::graph2D_traj(1, traj );
-		ros_traj_utils::graph2D_traj(2, traj );
-		ros_traj_utils::graph2D_traj(3, traj );
-		ros_traj_utils::graph2D_traj(4, traj);
-	}
+		msgQP = ros_traj_utils::encodePath(1,traj,"world");
+		visual_vel_pub_.publish(msgQP);
+		msgQP = ros_traj_utils::encodePath(2,traj,"world");
+		visual_acc_pub_.publish(msgQP);
+	}	
 }
 
 void executeOneShotTraj(std::vector<waypoint>  vertices, poscmd_publisher * controller, TrajBase * traj){

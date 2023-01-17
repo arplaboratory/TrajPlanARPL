@@ -1,0 +1,25 @@
+device: "/quadrotor"
+odom_frame: "/odom"
+#odom_frame: "/quadrotor_ukf/control_odom"
+#visual: false #Do you use Visual Feedback from an apriltag (Deprecated need sometime over the weekend for fixing)
+target_pose:  #4x4 target (Given for perching manually)
+#row 1
+  - 0.0
+  - 0.0
+  - -1.0
+  - 0.0
+#row 2
+  - 0.0
+  - 1.0
+  - 0.0
+  - 0.0
+#row 3
+  - 1.0
+  - 0.0
+  - 0.0
+  - 0.0
+#row 4
+  - 0.0
+  - 0.0
+  - 0.0
+  - 1.0
