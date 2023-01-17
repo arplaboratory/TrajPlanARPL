@@ -4,9 +4,7 @@ Polynomial Trajectory Generation with Quadratic Programming
 
 Overview
 ------------------------
-Package that contains library for generating smooth trajectories fast with polynomial splines. ros_traj_gen_arpl_interface acts as a ROS interface. traj_gen- library files to generate trjaectories. Ros_traj_gen_utils - visualization library files along with listener and publisher libraries, includes the files for the QP_Trackers/Berstein Tracker which interface witih our control pipeline to plan trajectory.
-
-For VISUAL PERCHING switch to fix/noetic_2204 branch. This is in the traj_gen_arpl_interface folder which has a more in depth visual perching inside although not as cleanly integrated with ARPL_quadrotor_control
+Package that contains library for generating smooth trajectories fast with polynomial splines. ros_traj_gen_arpl_interface acts as a ROS interface. traj_gen- library files to generate trjaectories. Ros_traj_gen_utils - visualization library files along with listener and publisher 
 
 **Developer: Jeffery Mao<br />
 Affiliation: [NYU ARPL](https://wp.nyu.edu/arpl/)<br />
@@ -44,6 +42,7 @@ If you publish a paper with this work, please cite our paper:
 @inproceedings{mao2021aggressive,
   title={Aggressive visual perching with quadrotors on inclined surfaces},
   author={Mao, Jeffrey and Li, Guanrui and Nogar, Stephen and Kroninger, Christopher and Loianno, Giuseppe},
+  url = {https://arxiv.org/abs/2107.11171},
   booktitle={2021 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
   pages={5242--5248},
   year={2021},
@@ -56,7 +55,7 @@ If you publish a paper with this work, please cite our paper:
 Installation  
 -------------------------
 ```
-git clone https://github.com/arplaboratory/ARPL_Trajectory_Planning
+git clone https://github.com/arplaboratory/trajplan_arpl
 git clone https://github.com/arplaboratory/arpl_msgs.git
 cd ARPL_Trajectory_Planning
 sh install_trajgen_depend.sh
@@ -74,22 +73,48 @@ git clone https://github.com/KumarRobotics/waypoint_navigation_plugin.git
 
 Run Demo
 ------------------------
-If you are from ARPL, please follow these steps on your computer:
+please follow these steps on your computer:
 ```
 roslaunch waypoint_navigation_plugin rviz.launch
 ```
+Open another terminal and run
 
 ```
 roslaunch ros_traj_gen_utils traj_plan.launch
 ```
+
 Change Robot name to vehicle_name/waypoints <- standard trajectory 
- Load the waypoints in the ros_traj_gen_utils/config/perch_general.bag
- The plugin will publish a nav_msgs/path
+Load the waypoints in the ros_traj_gen_utils/config/perch_general.bag
+The plugin will publish a nav_msgs/path
 Output visualized 3D path. 2d plots of time versions various. 
 topic published on vehicle_name/position_cmd
 
 Initially this is set with a hardcoded target orientation of 90 degrees where you should see it reflected in the acceleration.
 You can also drag and drop waypoints to see various paths.
+
+Run Demo Internal 
+------------------------
+
+If you are internal to ARPL and want to use our simulator do the following and use the internal waypoint navigation plugin
+
+```
+roslaunch arpl_autonomy single_quadrotor_sim.launch
+```
+Open another terminal and run
+
+```
+roslaunch ros_traj_gen_utils traj_plan.launch
+```
+
+Change Robot name to vehicle_name/waypoints <- standard trajectory 
+Load the waypoints in the ros_traj_gen_utils/config/perch_general.bag
+The plugin will publish a nav_msgs/path
+Output visualized 3D path. 2d plots of time versions various. 
+topic published on vehicle_name/position_cmd
+
+Initially this is set with a hardcoded target orientation of 90 degrees where you should see it reflected in the acceleration.
+You can also drag and drop waypoints to see various paths.
+
 
 Launch File
 ------------------------
@@ -97,11 +122,14 @@ The launch file loads std_launch.yaml running  roslaunch ros_traj_gen_utils traj
 
 Config File
 ------------------------
+config.yaml
+Standard config
 mav_name - vehicle if you want to loop a vehicle's odometry mav_name/odom inside nav_msgs/odometry type. If no odometry is detected it will not automatically lopp the mav_name/odom topic inside
 
+perch_config.yaml
 visual - true. Allows visual feedback to pushed in.
 
-target - 4x4 matrix example given. Only the first 3x3 block. Will set a desired target if you want to hardcore it. This will be applied to the last target.If no target is set then we assume a full stop
+target - 4x4 matrix example given. Only the first 3x3 block. Will set a desired target if you want to hardcore it. This will be applied to the last target.If no target is set then we assume a full stop. Will be overrieded by visual if visual is enabled to true. 
 
 Currently, this is naturally set to a 90 degree pitch interception. 
 
