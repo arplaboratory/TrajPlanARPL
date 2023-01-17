@@ -4,6 +4,7 @@
 #include <traj_gen/trajectory/Waypoint.h>
 #include <traj_gen/trajectory/QPpolyTraj.h>
 #include <traj_gen/traj_utils/polynomial.h>
+#include <ros_traj_gen_utils/apriltag_utils.h>
 #include <traj_gen/trajectory/TrajBase.h>
 #include <ros_traj_gen_utils/ros_traj_utils.h>
 #include <ros_traj_gen_utils/ros_waypoint_utils.h>
@@ -22,10 +23,13 @@ ros::Publisher visual_acc_pub_;
 
 ros::Subscriber subWaypoint;
 ros::Subscriber subMap;
+apriltag_utils aprilListen;
 
 ros::ServiceClient srv_transition_;
 ros::ServiceClient hover_;
 ros::Subscriber subOdomMsg;
+ros::Subscriber subApril;
+
 odom_utils odomListiner;
 static const std::string line_tracker_min_jerk("std_trackers/LineTrackerMinJerkAction");
 static const std::string null_tracker_str("std_trackers/NullTracker");
@@ -48,12 +52,15 @@ void init_params(){
     ros::start();
     ros::NodeHandle nh("/traj_exe");
 	nh.getParam("device", vehicle_name);
+	nh.getParam("visual", useVisual);
+
 	std::cout << " VEHICLE NAME " << vehicle_name <<std::endl;
     // setting up the publishers and subscribers
 	ros::NodeHandle nh_;
 	pubQP = nh_.advertise<nav_msgs::Path>("/"+vehicle_name+"/trackers_manager/qp_tracker/qp_trajectory_pos", 10);
 	visual_vel_pub_ = nh_.advertise<nav_msgs::Path>("/"+vehicle_name+"/trackers_manager/qp_tracker/qp_trajectory_vel", 10);
 	visual_acc_pub_ = nh_.advertise<nav_msgs::Path>("/"+vehicle_name+"/trackers_manager/qp_tracker/qp_trajectory_acc", 10);
+	subApril = nh.subscribe("/tag_detections_pose" , 10 , &apriltag_utils::aprilListen, &aprilListen);
 
 	subWaypoint = nh.subscribe(vehicle_name+"/waypoints", 10, &ros_waypoint_utils::waypointListiner, &listener);
 	srv_transition_ = nh.serviceClient<trackers_msgs::Transition>(vehicle_name+"/trackers_manager/transition");
@@ -165,7 +172,15 @@ void executeReplanTraj(std::vector<waypoint>  vertices, poscmd_publisher * contr
 		if (time_plan >=replan_time){
 			//std::cout << "replan start" <<std::endl;
 			double replan_timer = ros::Time::now().nsec *1e-9 ;
-			replan_success = replanner.replan(4, time_plan, 0.05);
+			if(useVisual){
+				Eigen::Matrix4d H;
+				if(aprilListen.getLanding(&H)){
+					replan_success = replanner.replan(4,time_plan,0.05,H);
+				}
+			}
+			else{
+				replan_success = replanner.replan(4, time_plan, 0.05);
+			}
 			//std::cout << "replan end" <<std::endl;
 			if (replan_success){
 				traj_use = replanner.getTraj();
@@ -180,6 +195,7 @@ void executeReplanTraj(std::vector<waypoint>  vertices, poscmd_publisher * contr
 	std_srvs::Trigger trigger;
 	hover_.call(trigger);
 }
+
 
 
 
