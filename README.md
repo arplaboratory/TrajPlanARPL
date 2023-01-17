@@ -100,29 +100,6 @@ roslaunch ros_traj_gen_utils perch.launch
 Initially this is set with perch_config target orientation of 90 degrees where you should see it reflected in the acceleration.
 You can also drag and drop waypoints to see various paths.
 
-Run Demo Internal 
-------------------------
-
-If you are internal to ARPL and want to use our simulator do the following and use the internal waypoint navigation plugin
-
-```
-roslaunch arpl_autonomy single_quadrotor_sim.launch
-```
-Open another terminal and run
-
-```
-roslaunch ros_traj_gen_utils traj_plan.launch
-```
-or perch for the object
-
-Change Robot name to vehicle_name
-The plugin will publish a nav_msgs/path
-Output visualized 3D path. 2d plots of time versions various. 
-topic published on vehicle_name/position_cmd
-
-Initially this is set with perch_config target orientation of 90 degrees where you should see it reflected in the acceleration.
-You can also drag and drop waypoints to see various paths.
-
 
 Launch File
 ------------------------
