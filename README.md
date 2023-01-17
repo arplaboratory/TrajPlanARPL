@@ -71,7 +71,7 @@ ON YOUR LAPTOP, clone and build the repository Waypoint Navigation Plug-in (usef
 git clone https://github.com/KumarRobotics/waypoint_navigation_plugin.git
 ```
 
-Run Demo
+Run Demo External 
 ------------------------
 please follow these steps on your computer:
 ```
@@ -83,13 +83,21 @@ Open another terminal and run
 roslaunch ros_traj_gen_utils traj_plan.launch
 ```
 
-Change Robot name to vehicle_name/waypoints <- standard trajectory 
+Change in waypoint navigation plugin topic: to vehicle_name/waypoints 
+vehicle_name is in the .yaml 
 Load the waypoints in the ros_traj_gen_utils/config/perch_general.bag
 The plugin will publish a nav_msgs/path
-Output visualized 3D path. 2d plots of time versions various. 
+Output visualized 3D path. 
 topic published on vehicle_name/position_cmd
 
-Initially this is set with a hardcoded target orientation of 90 degrees where you should see it reflected in the acceleration.
+This is for general flight. If you want to use perching simpling write.
+
+
+```
+roslaunch ros_traj_gen_utils perch.launch
+```
+
+Initially this is set with perch_config target orientation of 90 degrees where you should see it reflected in the acceleration.
 You can also drag and drop waypoints to see various paths.
 
 Run Demo Internal 
@@ -105,14 +113,14 @@ Open another terminal and run
 ```
 roslaunch ros_traj_gen_utils traj_plan.launch
 ```
+or perch for the object
 
-Change Robot name to vehicle_name/waypoints <- standard trajectory 
-Load the waypoints in the ros_traj_gen_utils/config/perch_general.bag
+Change Robot name to vehicle_name
 The plugin will publish a nav_msgs/path
 Output visualized 3D path. 2d plots of time versions various. 
 topic published on vehicle_name/position_cmd
 
-Initially this is set with a hardcoded target orientation of 90 degrees where you should see it reflected in the acceleration.
+Initially this is set with perch_config target orientation of 90 degrees where you should see it reflected in the acceleration.
 You can also drag and drop waypoints to see various paths.
 
 
@@ -128,6 +136,7 @@ mav_name - vehicle if you want to loop a vehicle's odometry mav_name/odom inside
 
 perch_config.yaml
 visual - true. Allows visual feedback to pushed in.
+Will expect Geometry_msgs/Array for AprilTagDetection on topic name "/tag_detections_pose" to use that pose.
 
 target - 4x4 matrix example given. Only the first 3x3 block. Will set a desired target if you want to hardcore it. This will be applied to the last target.If no target is set then we assume a full stop. Will be overrieded by visual if visual is enabled to true. 
 
