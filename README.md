@@ -110,9 +110,10 @@ Config File
 config.yaml
 Standard config
 mav_name - vehicle if you want to loop a vehicle's odometry mav_name/odom inside nav_msgs/odometry type. If no odometry is detected it will not automatically lopp the mav_name/odom topic inside
+replan - boolean true/false allows replanning
 
 perch_config.yaml
-visual - true. Allows visual feedback to pushed in.
+visual - boolean true/false. Allows visual feedback to pushed in.
 Will expect Geometry_msgs/Array for AprilTagDetection on topic name "/tag_detections_pose" to use that pose.
 
 target - 4x4 matrix example given. Only the first 3x3 block. Will set a desired target if you want to hardcore it. This will be applied to the last target.If no target is set then we assume a full stop. Will be overrieded by visual if visual is enabled to true. 
