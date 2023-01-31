@@ -55,7 +55,7 @@ If you publish a paper with this work, please cite our paper:
 Installation  
 -------------------------
 ```
-git clone https://github.com/arplaboratory/trajplan_arpl
+git clone https://github.com/arplaboratory/TrajPlanArpl
 git clone https://github.com/arplaboratory/arpl_msgs.git
 cd ARPL_Trajectory_Planning
 sh install_trajgen_depend.sh
